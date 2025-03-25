@@ -19,7 +19,9 @@ Route::get('/', \App\Livewire\Auth\Login::class)->name('login');
 Route::get('/register', \App\Livewire\Auth\Register::class)->name('register');
 
 # admin
-Route::get('/dasbor', \App\Livewire\Admin\Dasbor\Dasbor::class)->name('dashbor');
+Route::get('/dasbor', \App\Livewire\Admin\Dasbor\Dasbor::class)->name('dasbor');
+Route::get('/dasbor-pengguna', \App\Livewire\Admin\DasborPengguna\DasborPengguna::class)->name('dasbor-pengguna');
+
 
 // Route::get('/asesmen-evaluator', \App\Livewire\Admin\AsesmenEvaluator\DaftarAsesmenEvaluator::class)->name('daftar-asesmen-evaluator');
 Route::get('/asesmen-evaluator', \App\Livewire\Admin\AsesmenEvaluator\DaftarAsesmenEvaluator::class);

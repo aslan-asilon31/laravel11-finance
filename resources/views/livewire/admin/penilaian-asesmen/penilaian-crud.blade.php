@@ -26,20 +26,8 @@
 
   <x-form wire:submit="{{ $id ? 'update' : 'store' }}" wire:confirm="Are you sure?">
 
-
-    
-
-
-
-
-
-
-
-
-
-
     @forelse($masterPengguna as $mp)
-    
+
       <div class="col-span-full pb-8  ">
         <label for="about" class="block text-sm/6 font-medium text-gray-900">Jawaban Soal 1</label>
         <div class="mt-2">
@@ -53,7 +41,7 @@
           </div>
         </div>
         <hr>
-      </div> 
+      </div>
     @empty
     <p>Tidak ada data pengguna.</p>
     @endforelse

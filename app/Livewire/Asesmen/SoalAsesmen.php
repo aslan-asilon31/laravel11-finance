@@ -108,12 +108,12 @@ class SoalAsesmen extends Component
 
             if (is_array($soalState) && count($soalState) >= 0) {
                 $this->jawaban = [];
-        
+
                 foreach ($soalState as $question) {
                     if (isset($question['nomorSoal']) && isset($question['jawaban'])) {
                         $this->indexJawaban = $question['nomorSoal']-1;
                         $this->waktuSoal = $question['durasiSoal'];
-        
+
                         $this->jawaban[$this->indexJawaban] = $question['jawaban'] ?? '';
                     } else {
                         error_log('Error: Necessary keys (nomorSoal or jawaban) are missing in a question.');
@@ -125,8 +125,8 @@ class SoalAsesmen extends Component
         } else {
             error_log('Error: Session variable soal-sesi.soal does not exist.');
         }
-        
-        
+
+
 
     }
 
@@ -166,7 +166,7 @@ class SoalAsesmen extends Component
             Session::put('soal-sesi.waktuAsesmenMulai', $this->waktuAsesmenMulai->format('Y-m-d H:i:s'));
             Session::put('soal-sesi.waktuAsesmenSelesai', $this->waktuAsesmenSelesai->format('Y-m-d H:i:s'));
         }
-        
+
         $this->waktuSoalSekarang = now(); // Waktu sekarang untuk soal
         $this->waktuSoalMulai = 30; // Misalkan durasi soal dalam detik (30 detik)
         $this->waktuSoal = $this->pertanyaans[$this->indexJawaban]->durasi;
@@ -220,7 +220,7 @@ class SoalAsesmen extends Component
 
     public function soalSelanjutnya()
     {
-        $this->currentSoalNow = now(); 
+        $this->currentSoalNow = now();
 
         if (session()->get('soal-sesi.userId') === $this->userId) {
             session([
