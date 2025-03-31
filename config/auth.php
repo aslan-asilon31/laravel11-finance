@@ -38,9 +38,13 @@ return [
 
 
     'guards' => [
+        'api' => [
+            'driver' => 'jwt',
+            'provider' => 'users',
+        ],
         'web' => [
             'driver' => 'session',
-            'provider' => 'penggunas',
+            'provider' => 'users',
 
         ],
     ],
@@ -63,9 +67,9 @@ return [
     */
 
     'providers' => [
-        'penggunas' => [
+        'users' => [
             'driver' => 'eloquent',
-            'model' => env('AUTH_MODEL', App\Models\Pengguna::class),
+            'model' => env('AUTH_MODEL', App\Models\User::class),
         ],
         // 'users' => [
         //     'driver' => 'eloquent',
@@ -100,7 +104,7 @@ return [
 
     'passwords' => [
         'users' => [
-            'provider' => 'penggunas',
+            'provider' => 'users',
             'table' => env('AUTH_PASSWORD_RESET_TOKEN_TABLE', 'password_reset_tokens'),
             'expire' => 60,
             'throttle' => 60,

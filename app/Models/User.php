@@ -21,10 +21,12 @@ use Laravel\Sanctum\HasApiTokens;
 // use Wallo\FilamentCompanies\HasConnectedAccounts;
 // use Wallo\FilamentCompanies\HasProfilePhoto;
 // use Wallo\FilamentCompanies\SetsProfilePhotoFromUrl;
+use Spatie\Permission\Traits\HasRoles;
 
 class User extends Authenticatable
 {
     use HasApiTokens;
+    use HasRoles;
     // use HasCompanies;
     // use HasConnectedAccounts;
     use HasFactory;
@@ -37,6 +39,10 @@ class User extends Authenticatable
      *
      * @var array<int, string>
      */
+
+    protected $table = 'users';
+    protected $primaryKey = 'id';
+
     protected $fillable = [
         'name', 'email', 'password',
     ];
@@ -68,6 +74,21 @@ class User extends Authenticatable
     protected $appends = [
         'profile_photo_url',
     ];
+
+    public function getJWTIdentifier()
+    {
+        return $this->getKey();
+    }
+
+    public function getUserPermissions()
+{
+    return $this->getAllPermissions()->mapWithKeys(fn($permission) => [$permission['name'] => true]);
+}
+
+    public function getJWTCustomClaims()
+    {
+        return [];
+    }
 
     public function canAccessPanel(Panel $panel): bool
     {

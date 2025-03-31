@@ -1,0 +1,84 @@
+<?php
+
+namespace App\Http\Controllers;
+
+
+use App\Helper\ResponseApi;
+use App\Models\User;
+use Illuminate\Http\Request;
+use Illuminate\Support\Facades\{Hash, Validator, Crypt};
+use Carbon\Carbon;
+
+class AutenticationController extends Controller
+{
+    public function __construct()
+    {
+        $this->middleware('auth:api', ['except' => ['login']]);
+    }
+    // login
+    public function login(Request $request)
+    {
+        $validator = Validator::make($request->all(), [
+            'email' => 'required|email',
+            'password' => 'required|string|min:6',
+        ]);
+
+        if ($validator->fails()) {
+            return ResponseApi::statusValidateError()->error($validator->errors())->json();
+        }
+
+        $email = User::where('email', $request->email)->first();
+        if (!$email) {
+            return ResponseApi::statusQueryError()->error('login gagal, email salah')->data([
+                "email" => "email anda salah!"
+            ])->json();
+        }
+
+
+        $exp = 1440;
+        if ($request->remember_me)
+            $exp = $this->expires_in_remember();
+        if (!$token = auth()->guard("api")->setTTL($exp)->attempt($validator->validated())) {
+            return ResponseApi::statusQueryError()->error('login gagal, password salah')->data([
+                "password" => "password anda salah!"
+            ])->json();
+        }
+        return $this->respondWithToken($token);
+    }
+
+    // logout
+    public function logout()
+    {
+        auth()->logout();
+        return response()->json(['message' => 'User successfully logged out.']);
+    }
+
+    public function getUser()
+    {
+        return ResponseApi::statusSuccess()->data(User::all())->json();
+    }
+}
+
+    // refresh
+    public function refresh()
+    {
+        return $this->respondWithToken(auth("api")->refresh());
+    }
+
+    public function expires_in_remember()
+    {
+        return Carbon::now()->addYears(2)->getTimestamp();
+    }
+
+    // token
+    protected function respondWithToken($token)
+    {
+        return ResponseApi::statusSuccess()
+            ->message("login berhasil.")
+            ->data([
+                'access_token' => $token,
+                'token_type'   => 'bearer',
+                'permission'   => auth()->guard("api")->user()->getRoleNames()[0] ?? false
+            ])->json();
+    }
+}
