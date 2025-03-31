@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html lang="{{ str_replace('_', '-', app()->getLocale()) }}">
+<html lang="{{ str_replace('_', '-', $lang ?? app()->getLocale()) }}">
 <head>
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, viewport-fit=cover">
@@ -32,6 +32,20 @@
 
         {{-- The `$slot` goes here --}}
         <x-slot:content>
+
+            <!-- HEADER -->
+            <x-header title="Hello" separator progress-indicator>
+
+
+
+                <x-slot:middle class="!justify-end">
+                    <x-input placeholder="Search..." wire:model.live.debounce="search" clearable icon="o-magnifying-glass" />
+                </x-slot:middle>
+                <x-slot:actions>
+                    <x-button label="Filters" @click="$wire.drawer = true" responsive icon="o-funnel" class="btn-primary" />
+                </x-slot:actions>
+            </x-header>
+
             {{ $slot }}
         </x-slot:content>
     </x-main>

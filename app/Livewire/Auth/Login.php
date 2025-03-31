@@ -41,9 +41,9 @@ class Login extends Component
 
 
 
-        // $pengguna = Pengguna::where('surel', $validatedLoginForm['surel'])->first();
+        // $user = Pengguna::where('surel', $validatedLoginForm['surel'])->first();
 
-        // if ($pengguna && password_verify($validatedLoginForm['sandi'], $pengguna->sandi)) {
+        // if ($user && password_verify($validatedLoginForm['sandi'], $user->sandi)) {
                 // return redirect()->to('/dasbor');
 
                 if (Auth::attempt(['surel' => $validatedLoginForm['surel'], 'sandi' => $validatedLoginForm['sandi']])) {
