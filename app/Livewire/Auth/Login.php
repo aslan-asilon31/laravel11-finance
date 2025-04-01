@@ -9,7 +9,7 @@ use Livewire\Attributes\Title;
 use Livewire\Attributes\Layout;
 use Illuminate\Support\Facades\Log;
 
-use App\Models\Pengguna; // Model pengguna
+use App\Models\User; // Model User
 use Illuminate\Http\JsonResponse; // Untuk tipe respons JSON
 use Illuminate\Http\Request; // Untuk Request
 use Illuminate\Support\Facades\Auth;
@@ -21,6 +21,12 @@ class Login extends Component
 {
 
     public  $title = "Halaman Login";
+    public  $user;
+    public  $email;
+    public  $password;
+
+
+
     public LoginForm $loginForm;
 
     public function mount()
@@ -40,20 +46,20 @@ class Login extends Component
           )['loginForm'] ?? [];
 
 
+        $user = User::where('email', $validatedLoginForm['email'])->first();
 
-        // $user = Pengguna::where('surel', $validatedLoginForm['surel'])->first();
-
-        // if ($user && password_verify($validatedLoginForm['sandi'], $user->sandi)) {
+        if ($user && password_verify($validatedLoginForm['password'], $user->password)) {
                 // return redirect()->to('/dasbor');
 
-                if (Auth::attempt(['surel' => $validatedLoginForm['surel'], 'sandi' => $validatedLoginForm['sandi']])) {
+                // if (Auth::attempt(['email' => $validatedLoginForm['email'], 'password' => $validatedLoginForm['password']])) {
                     // Login berhasil
-                    return redirect()->intended('dasbor');
+                    return 'success';
+                    // return redirect()->intended('dasbor');
                 } else {
                     // Login gagal
-                    Log::warning('Login failed for:', ['surel' => $validatedLoginForm['surel']]);
+                    Log::warning('Login failed for:', ['email' => $validatedLoginForm['email']]);
                     throw ValidationException::withMessages([
-                        'sandi' => ['Surel atau sandi yang Anda masukkan salah.'],
+                        'password' => ['email atau password yang Anda masukkan salah.'],
                     ]);
                 }
         }

@@ -77,13 +77,20 @@
         <div class="w-full bg-gray-100 lg:w-1/2 flex items-center justify-center">
           <div class="max-w-md w-full p-6">
             <h1 class="text-3xl font-semibold mb-6 text-black text-center">{{ $title }}</h1>
-           
+
+            @if(Auth::check())
+    <p>Welcome, {{ Auth::user()->name }}!</p>
+@else
+    <p>You are not logged in.</p>
+@endif
+
+
             <x-form wire:submit="login" class="space-y-4">
-                <x-input wire:model="loginForm.surel" label="surel" placeholder="surel" icon-right="o-user"
+                <x-input wire:model="loginForm.email" label="email" placeholder="email" icon-right="o-user"
                   right />
-                <x-password wire:model="loginForm.sandi" class="block text-sm font-medium text-gray-700" label="sandi"  placeholder="sandi"
+                <x-password wire:model="loginForm.password" class="block text-sm font-medium text-gray-700" label="password"  placeholder="password"
                   password-icon="o-lock-closed" password-visible-icon="o-lock-open" right />
-  
+
                 <x-button type="submit" spinner="login" class="block text-sm font-medium text-gray-700" class="bg-blue-700 hover:bg-blue-400 text-white btn-block">
                   Masuk
                 </x-button>
@@ -93,5 +100,5 @@
           </div>
         </div>
     </div>
-    
+
 </div>

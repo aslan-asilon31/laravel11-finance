@@ -7,22 +7,22 @@ use Livewire\Form;
 
 class LoginForm extends Form
 {
-  public string|null $surel = null;
-  public string|null $sandi = null;
+  public string|null $email = null;
+  public string|null $password = null;
 
   public function rules()
   {
     return [
-      'loginForm.surel' => 'required|string',
-      'loginForm.sandi' => 'required|string',
+      'loginForm.email' => 'required|string',
+      'loginForm.password' => 'required|string',
     ];
   }
 
   public function attributes()
   {
     return [
-      'loginForm.surel' => 'surel',
-      'loginForm.sandi' => 'sandi',
+      'loginForm.email' => 'email',
+      'loginForm.password' => 'password',
     ];
   }
 }
