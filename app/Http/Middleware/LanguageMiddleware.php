@@ -17,10 +17,8 @@ class LanguageMiddleware
      */
     public function handle(Request $request, Closure $next): Response
     {
-        // $lang = Session::get('locale', 'en');
 
-        $locale = $request->route('id'); // Ambil parameter id
-        // app()->setLocale($locale); // Atur locale
+        $locale = $request->route('locale');
 
         App::setLocale($locale);
 

@@ -32,7 +32,7 @@ class Login extends Component
     public function mount()
     {
       if (\Illuminate\Support\Facades\Auth::check()) {
-        return redirect()->intended('dasbor');
+        return redirect()->intended('dashboard');
       }
     }
 
@@ -49,12 +49,8 @@ class Login extends Component
         $user = User::where('email', $validatedLoginForm['email'])->first();
 
         if ($user && password_verify($validatedLoginForm['password'], $user->password)) {
-                // return redirect()->to('/dasbor');
+                return redirect()->to('/dashboard');
 
-                // if (Auth::attempt(['email' => $validatedLoginForm['email'], 'password' => $validatedLoginForm['password']])) {
-                    // Login berhasil
-                    return 'success';
-                    // return redirect()->intended('dasbor');
                 } else {
                     // Login gagal
                     Log::warning('Login failed for:', ['email' => $validatedLoginForm['email']]);
@@ -62,7 +58,7 @@ class Login extends Component
                         'password' => ['email atau password yang Anda masukkan salah.'],
                     ]);
                 }
-        }
+    }
 
 
     #[Title('Halaman Login')]

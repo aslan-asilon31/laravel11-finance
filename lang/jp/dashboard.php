@@ -13,6 +13,7 @@ return [
     'users'             => 'ユーザー',
     'dashboard'         => 'ダッシュボード',
 
-
+    'permissions'         => 'Permissions',
+    'roles'         => 'Roles',
 
 ];

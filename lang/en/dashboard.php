@@ -12,6 +12,10 @@ return [
     'account-list'      => 'Account List',
     'users'         => 'Users',
     'dashboard'         => 'Dashboard',
+    'permissions'         => 'Permissions',
+    'roles'         => 'Roles',
+
+
 
 
 

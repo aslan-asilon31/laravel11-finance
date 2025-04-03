@@ -5,6 +5,24 @@ use App\Http\Controllers\UserController;
 use App\Http\Controllers\ProductController;
 use App\Http\Controllers\RoleController;
 
+use App\Livewire\Admin\Dashboard\ListDashboard;
+
+Route::get('/timer-component', App\Livewire\TimerComponent::class)->name('timer-component');
+
+Route::get('/role', App\Livewire\Admin\Role\RoleList::class)->name('role');
+Route::get('/permission', App\Livewire\Admin\Permission\PermissionList::class)->name('permission');
+
+
+
+use App\Http\Controllers\LanguageController;
+
+
+Route::group(['prefix' => '{locale}', 'where' => ['locale' => 'en|id|jp'], 'middleware' => 'language'], function () {
+    Route::get('/set-language', [LanguageController::class, 'setLanguage'])->name('set-language');
+    Route::get('/dashboard', ListDashboard::class)->name('dashboard');
+});
+
+
     Route::get('/users', [App\Http\Controllers\UserController::class, 'index'])->name('users.index');
     Route::get('/users/create', [UserController::class, 'create'])->name('users.create');
     Route::post('/users', [UserController::class, 'store'])->name('users.store');

@@ -24,16 +24,65 @@ class ListDashboard extends Component
     public array $sortBy = ['column' => 'name', 'direction' => 'asc'];
 
     public $setLang ;
+    public $title = "Dashboard" ;
+
     public $id ;
     public $lang ;
 
     #[Url]
     public $search = '';
 
+    public $dataPenjualan = [
+        [
+            'kecamatan' => 'Jakarta Selatan',
+            'penjualan' => 150000000,
+            'produk_terjual' => 300,
+            'latitude' => -6.2901, // Koordinat latitude Jakarta Selatan
+            'longitude' => 106.8047 // Koordinat longitude Jakarta Selatan
+        ],
+        [
+            'kecamatan' => 'Jakarta Pusat',
+            'penjualan' => 120000000,
+            'produk_terjual' => 250,
+            'latitude' => -6.1751, // Koordinat latitude Jakarta Pusat
+            'longitude' => 106.8650 // Koordinat longitude Jakarta Pusat
+        ],
+        [
+            'kecamatan' => 'Jakarta Barat',
+            'penjualan' => 100000000,
+            'produk_terjual' => 200,
+            'latitude' => -6.1751, // Koordinat latitude Jakarta Barat
+            'longitude' => 106.7450 // Koordinat longitude Jakarta Barat
+        ],
+        [
+            'kecamatan' => 'Jakarta Utara',
+            'penjualan' => 80000000,
+            'produk_terjual' => 150,
+            'latitude' => -6.1352, // Koordinat latitude Jakarta Utara
+            'longitude' => 106.8500 // Koordinat longitude Jakarta Utara
+        ],
+        [
+            'kecamatan' => 'Jakarta Timur',
+            'penjualan' => 70000000,
+            'produk_terjual' => 100,
+            'latitude' => -6.2152, // Koordinat latitude Jakarta Timur
+            'longitude' => 106.8832 // Koordinat longitude Jakarta Timur
+        ],
+    ];
+
+
+    public $selectedKecamatan = 'Jakarta Selatan';
+
+    public function filter($kecamatan)
+    {
+        $this->selectedKecamatan = $kecamatan;
+        $this->dispatch('update-map', ['kecamatan' => $kecamatan]);
+    }
+
+
     public function mount()
     {
-
-        App::setLocale(Route::current()->parameter('lang'));
+        App::setLocale(Route::current()->parameter('locale'));
 
     }
 
@@ -46,6 +95,9 @@ class ListDashboard extends Component
             $this->setLang = $this->lang;
 
             App::setLocale($this->lang);
+
+            $this->dispatch('change-language',title:$this->lang);
+
         } else {
             session()->flash('error', 'Invalid language code');
         }

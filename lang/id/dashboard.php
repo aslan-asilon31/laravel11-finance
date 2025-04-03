@@ -12,7 +12,8 @@ return [
     'account-list'      => 'Daftar Akun',
     'users'             => 'Pengguna',
     'dashboard'         => 'Dashboard',
-
+    'permissions'         => 'Permissions',
+    'roles'         => 'Roles',
 
 
 ];
