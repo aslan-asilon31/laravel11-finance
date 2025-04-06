@@ -32,12 +32,6 @@
 
         {{-- The `$slot` goes here --}}
         <x-slot:content>
-
-
-
-            <!-- HEADER -->
-
-
             {{ $slot }}
         </x-slot:content>
     </x-main>

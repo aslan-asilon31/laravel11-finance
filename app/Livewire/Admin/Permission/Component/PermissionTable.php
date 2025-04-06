@@ -1,6 +1,6 @@
 <?php
 
-namespace App\Livewire\Admin\Role\Component;
+namespace App\Livewire\Admin\Permission\Component;
 
 use App\Helpers\Table\Traits\WithTable;
 use App\Models\Permission;
@@ -30,6 +30,7 @@ final class PermissionTable extends PowerGridComponent
     use WithExport;
     use WithTable;
 
+
     public function setUp(): array
     {
         return [
@@ -45,7 +46,7 @@ final class PermissionTable extends PowerGridComponent
 
     public function datasource(): Builder
     {
-        return Role::query()
+        return Permission::query()
             ->select([
                 'id',
                 'name',
@@ -66,9 +67,9 @@ final class PermissionTable extends PowerGridComponent
             ->add('action', fn($record) => Blade::render('
                 <x-dropdown no-x-anchor class="btn-sm">
                     <x-menu-item title="Show" Link="/daftar-pertanyaan/show/' . e($record->id) . '/readonly" />
-                    <x-menu-item title="Edit" Link="/daftar-pertanyaan/edit/' . e($record->id) . '"/>
+                    <x-menu-item class="'. $editButtonClass .'" title="Edit" Link="/daftar-pertanyaan/edit/' . e($record->id) . '"/>
                 </x-dropdown>'))
-            ->add('name', fn($record) => $record->nama)
+            ->add('name', fn($record) => $record->name)
             ->add('guard_name');
     }
 
@@ -77,20 +78,28 @@ final class PermissionTable extends PowerGridComponent
         return [
             Column::make('Action', 'action')
                 ->visibleInExport(false)
-                ->bodyAttribute('text-center'),
+                ->bodyAttribute('text-center')
+                ->headerAttribute('text-center', 'background-color:indigo; color:white;text-align:center;'),
+
 
             Column::make('ID', 'id')
                 ->visibleInExport(false) // Hide ID column in export
-                ->sortable(),
+                ->sortable()
+                ->headerAttribute('text-center', 'background-color:indigo; color:white;text-align:center;'),
+
 
             Column::make('Name', 'name')
                 ->sortable()
-                ->searchable(),
+                ->searchable()
+                ->headerAttribute('text-center', 'background-color:indigo; color:white;text-align:center;'),
+
 
 
             Column::make('guard name', 'guard_name')
                 ->sortable()
-                ->searchable(),
+                ->searchable()
+                ->headerAttribute('text-center', 'background-color:indigo; color:white;text-align:center;'),
+
 
         ];
     }

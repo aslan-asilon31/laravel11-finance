@@ -23,7 +23,7 @@ class Permission extends Authenticatable
     use HasFactory;
     use Notifiable;
 
-    protected $table = 'Permission';
+    protected $table = 'permissions';
     protected $primaryKey = 'id';
 
     protected $fillable = [

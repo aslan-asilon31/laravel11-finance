@@ -3,69 +3,39 @@
 namespace App\Livewire\Auth;
 
 use Livewire\Component;
-use App\Models\Asesmen;
-use Livewire\Attributes\On;
-use Livewire\Attributes\Title;
-use Livewire\Attributes\Layout;
-use Illuminate\Support\Facades\Log;
-
-use App\Models\User; // Model User
-use Illuminate\Http\JsonResponse; // Untuk tipe respons JSON
-use Illuminate\Http\Request; // Untuk Request
 use Illuminate\Support\Facades\Auth;
-use Illuminate\Validation\ValidationException; // Untuk pengecualian validasi
-use App\Livewire\Auth\Forms\LoginForm;
-use Illuminate\Support\Facades\Hash;
+use Illuminate\Validation\ValidationException;
 
 class Login extends Component
 {
+    public $email;
+    public $password;
 
-    public  $title = "Halaman Login";
-    public  $user;
-    public  $email;
-    public  $password;
-
-
-
-    public LoginForm $loginForm;
-
-    public function mount()
-    {
-      if (\Illuminate\Support\Facades\Auth::check()) {
-        return redirect()->intended('dashboard');
-      }
-    }
-
+    protected $rules = [
+        'email' => 'required|email',
+        'password' => 'required|min:6',
+    ];
 
     public function login()
     {
-        $validatedLoginForm = $this->validate(
-            $this->loginForm->rules(),
-            [],
-            $this->loginForm->attributes()
-          )['loginForm'] ?? [];
+        $this->validate();
 
-
-        $user = User::where('email', $validatedLoginForm['email'])->first();
-
-        if ($user && password_verify($validatedLoginForm['password'], $user->password)) {
-                return redirect()->to('/dashboard');
-
-                } else {
-                    // Login gagal
-                    Log::warning('Login failed for:', ['email' => $validatedLoginForm['email']]);
-                    throw ValidationException::withMessages([
-                        'password' => ['email atau password yang Anda masukkan salah.'],
-                    ]);
-                }
+        if (Auth::attempt(['email' => $this->email, 'password' => $this->password])) {
+            // Authentication passed...
+            return redirect()->to('/role');
+        } else {
+            // Login failed
+            throw ValidationException::withMessages([
+                'email' => ['Email or password is incorrect.'],
+            ]);
+        }
     }
 
-
-    #[Title('Halaman Login')]
     public function render()
     {
-
         return view('livewire.auth.login')
         ->layout('components.layouts.app_auth');
+
     }
 }
+

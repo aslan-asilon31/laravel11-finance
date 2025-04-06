@@ -93,8 +93,6 @@ final class RoleTable extends PowerGridComponent
                 ->searchable()
                 ->headerAttribute('text-center', 'background-color:indigo; color:white;text-align:center;'),
 
-
-
             Column::make('guard name', 'guard_name')
                 ->sortable()
                 ->searchable()

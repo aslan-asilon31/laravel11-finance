@@ -1,19 +1,14 @@
 <?php
 
-namespace App\Livewire\Pengguna\Forms;
+namespace App\Livewire\Permission\Forms;
 
 use Livewire\Attributes\Validate;
 use Livewire\Form;
 
-class RoleForm extends Form
+class PermissionForm extends Form
 {
-  public string|null $nama = null;
-  public string|null $surel = null;
-  public string|null $sandi = null;
-  public string|null $dibuat_oleh = null;
-  public string|null $diupdate_oleh = null;
-  public string|null $tgl_dibuat = null;
-  public string|null $tgl_diupdate = null;
+  public string|null $name = null;
+  public string|null $guard_name = null;
 
   public function rules()
   {

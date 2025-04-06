@@ -2,17 +2,16 @@
 
 namespace App\Livewire\Admin\Role;
 
-use App\Livewire\Pages\Admin\Generals\PageResources\Forms\PageForm;
+use App\Livewire\Admin\Role\Forms\RoleForm;
 use Livewire\Component;
-use App\Models\Action;
+use App\Models\Role;
 use App\Models\Permission;
 use App\Models\RoleHasPermission;
-
+use Illuminate\Support\Facades\DB;
+use Illuminate\Support\Facades\Auth;
 
 class RoleCrud extends Component
 {
-    public $title = "Role";
-    public $url = "role";
 
     public function render()
     {
@@ -36,7 +35,8 @@ class RoleCrud extends Component
   #[\Livewire\Attributes\Locked]
   public string $url = '/role';
 
-
+  public $roles = [];
+  public $rolePermissions = [];
 
   #[\Livewire\Attributes\Locked]
   public string $id = '';
@@ -53,17 +53,28 @@ class RoleCrud extends Component
   #[\Livewire\Attributes\Locked]
   public array $options = [];
 
+
   #[\Livewire\Attributes\Locked]
   protected $masterModel = \App\Models\Role::class;
 
-  public PageForm $masterForm;
+    public $isLoading = false;
+    public  $permissions = [];
+    public  $selectedPermissions = [];
+    public  $groupedPermissions = [];
+    public bool $checkAll = false;
+
+
+
+  public RoleForm $masterForm;
 
   public function mount()
   {
+
+
     if ($this->id && $this->readonly) {
       $this->title .= ' (Show)';
       $this->show();
-    } else if ($this->id) {
+    } elseif ($this->id) {
       $this->title .= ' (Edit)';
       $this->edit();
     } else {
@@ -79,8 +90,7 @@ class RoleCrud extends Component
 
   public function create()
   {
-    // $this->permission($this->basePageName.'-create');
-
+    // dd($this->masterForm);
     $this->masterForm->reset();
   }
 
@@ -156,41 +166,98 @@ class RoleCrud extends Component
 
   public function edit()
   {
-    $this->permission($this->basePageName.'-update');
 
-    $masterData = $this->masterModel::findOrFail($this->id);
-    $this->masterForm->fill($masterData);
+    $this->permissions = DB::table('permissions')->select('id', 'name')->get();
+
+    $this->rolePermissions = DB::table('roles')
+        ->join('role_has_permissions', 'roles.id', '=', 'role_has_permissions.role_id')
+        ->join('permissions', 'role_has_permissions.permission_id', '=', 'permissions.id')
+        ->join('model_has_roles', 'model_has_roles.role_id', '=', 'roles.id')
+        ->select('permissions.id as permission_id', 'permissions.name as permission_name')
+        ->where('role_has_permissions.role_id', $this->id)
+        ->get();
+
+
+        $this->groupedPermissions = [];
+        foreach ($this->permissions as $permission) {
+            // Split the permission name by dash
+            $parts = explode('-', $permission->name);
+            if (count($parts) > 2) {
+                // Use the second part as the key for grouping
+                $groupKey = $parts[1]; // e.g., 'post' from 'developer-post-create'
+                $this->groupedPermissions[$groupKey][] = $permission;
+            }
+        }
+
+
+
+    $this->selectedPermissions = $this->rolePermissions->pluck('permission_id')->toArray();
+  }
+
+  public function toggleCheckAll()
+  {
+      if ($this->checkAll) {
+          // If "Check All" is checked, select all permissions
+          $this->selectedPermissions = $this->permissions->pluck('id')->toArray();
+      } else {
+          // If "Check All" is unchecked, clear all selections
+          $this->selectedPermissions = [];
+      }
+  }
+
+
+  public function refreshData()
+  {
+    $this->isLoading = true;
+    $this->edit();
+    $this->isLoading = false;
   }
 
   public function update()
   {
-    $this->permission($this->basePageName.'-update');
+      // Validate the selected permissions
+      $validatedForm = $this->validate([
+          'selectedPermissions' => 'array',
+          'selectedPermissions.*' => 'exists:permissions,id',
+      ]);
 
-    $validatedForm = $this->validate(
-      $this->masterForm->rules(),
-      [],
-      $this->masterForm->attributes()
-    )['masterForm'];
+      $validatedForm['selectedPermissions'] = array_map('intval', $validatedForm['selectedPermissions']);
 
-    $masterData = $this->masterModel::findOrFail($this->id);
+    //   dd($validatedForm);
 
-    \Illuminate\Support\Facades\DB::beginTransaction();
-    try {
+      \Illuminate\Support\Facades\DB::beginTransaction();
+      try {
+          // Assuming you have the role ID stored in $this->id
+          $roleId = $this->id;
 
-      $validatedForm['id'] = str($validatedForm['name'])->slug('_');
-      $validatedForm['updated_by'] = auth()->user()->username;
+          // First, delete existing permissions for the role
+          DB::table('role_has_permissions')
+              ->where('role_id', $roleId)
+              ->delete();
 
+          // Insert the new permissions
+          $permissionsToInsert = array_map(function ($permissionId) use ($roleId) {
+              return [
+                  'role_id' => $roleId,
+                  'permission_id' => $permissionId,
+              ];
+          }, array_unique($validatedForm['selectedPermissions']));
 
-      $masterData->update($validatedForm);
+          // Insert the new permissions into the role_has_permissions table
+          DB::table('role_has_permissions')->insert($permissionsToInsert);
 
-      \Illuminate\Support\Facades\DB::commit();
+          \Illuminate\Support\Facades\DB::commit();
 
-      $this->success('Data has been updated');
-    } catch (\Throwable $th) {
-      \Illuminate\Support\Facades\DB::rollBack();
-      $this->error('Data failed to update');
-    }
+          // Optionally, you can add a success message or redirect
+          $this->success('Permissions updated successfully.');
+      } catch (\Throwable $th) {
+          \Illuminate\Support\Facades\DB::rollBack();
+          // Handle the error, log it, or show an error message
+          \Log::error('Failed to update permissions: ' . $th->getMessage());
+          $this->error('Failed to update permissions.');
+      }
   }
+
 
   public function delete()
   {

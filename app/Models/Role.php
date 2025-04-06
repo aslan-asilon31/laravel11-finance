@@ -38,8 +38,28 @@ class Role extends Authenticatable
     ];
 
 
+    public function getRolesWithPermissions()
+    {
+        $this->roles = Role::with(['permissions' => function($q) {
+            $q->select([
+                'id',
+                'name',
+                'guard_name',
+            ]);
+        }])
+        ->orderBy('id') // Mengurutkan berdasarkan ID role
+        ->get();
+    }
+
+
     public function role_has_permissions(): HasMany
     {
-        return $this->hasMany(RoleHasPermission::class, 'role_id');
+        return $this->hasMany(RoleHasPermission::class, 'id');
+    }
+
+
+    public function model_has_roles(): HasMany
+    {
+        return $this->hasMany(RoleHasPermission::class, 'id');
     }
 }
