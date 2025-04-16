@@ -14,21 +14,10 @@
     @livewireStyles
     @vite(['resources/css/app.css', 'resources/js/app.js'])
 </head>
-<body class="bg-gradient-to-r from-orange-700 to-orange-900 p-10 h-screen">
+<body class="">
     <x-toast />
 
-    {{-- <header class="bg-white shadow-md p-4 mb-10 rounded-md">
-        <div class="container mx-auto flex justify-between items-center">
-            <h1 class="text-sm md:text-md font-bold text-orange-900">Umedalife</h1>
-            <span id="asesmen-durasi" class="font-bold text-orange-900">{{ $asesmenDurasi }}</span>
-            <button type="button" id="logout-button" class="text-sm md:text-md font-bold text-orange-900 bottom">
-                Logout
-            </button>
-        </div>
-    </header> --}}
-
-
-    <div class="flex items-center justify-center ">
+    <div class=" ">
         {{ $slot }}
     </div>
 

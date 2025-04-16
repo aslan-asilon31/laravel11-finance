@@ -9,11 +9,15 @@ use App\Livewire\Admin\Dashboard\ListDashboard;
 use App\Http\Controllers\LanguageController;
 
 
-Route::get('/', function () {
-});
+// Route::get('/', function () {
+// });
 
 
 Route::get('/login', App\Livewire\Auth\Login::class)->name('login');
+
+Route::get('/product',  App\Livewire\Product\ProductList::class)->name('product-list');
+Route::get('/product/create',  App\Livewire\Product\ProductCrud::class)->name('product-crud');
+Route::get('/product/edit/{id}',  App\Livewire\Product\ProductCrud::class)->name('product-crud');
 
 
 Route::middleware('auth:sanctum')->group(function () {
@@ -23,23 +27,14 @@ Route::middleware('auth:sanctum')->group(function () {
     Route::get('/role/create', App\Livewire\Admin\Role\RoleCrud::class)->name('role-create');
     Route::get('/role/edit/{id}', App\Livewire\Admin\Role\RoleCrud::class)->name('role-edit');
 
-
-
     Route::get('/permission', App\Livewire\Admin\Permission\PermissionList::class)->name('permission');
     Route::get('/permission/create', App\Livewire\Admin\Permission\PermissionCrud::class)->name('permission-crud');
     Route::get('/permission/edit/{id}', App\Livewire\Admin\Permission\PermissionCrud::class)->name('permission-crud');
-
-
-
-
-
-
 
     Route::group(['prefix' => '{locale}', 'where' => ['locale' => 'en|id|jp'], 'middleware' => 'language'], function () {
         Route::get('/set-language', [LanguageController::class, 'setLanguage'])->name('set-language');
         Route::get('/dashboard', ListDashboard::class)->name('dashboard');
     });
-
 
         Route::get('/users', [App\Http\Controllers\UserController::class, 'index'])->name('users.index');
         Route::get('/users/create', [UserController::class, 'create'])->name('users.create');
@@ -59,13 +54,13 @@ Route::middleware('auth:sanctum')->group(function () {
         Route::delete('/roles/{role}', [RoleController::class, 'destroy'])->name('roles.destroy');
 
 
-        Route::get('/products', [ProductController::class, 'index'])->name('products.index');
-        Route::get('/products/create', [ProductController::class, 'create'])->name('products.create');
-        Route::post('/products', [ProductController::class, 'store'])->name('products.store');
-        Route::get('/products/{product}', [ProductController::class, 'show'])->name('products.show');
-        Route::get('/products/{product}/edit', [ProductController::class, 'edit'])->name('products.edit');
-        Route::put('/products/{product}', [ProductController::class, 'update'])->name('products.update');
-        Route::delete('/products/{product}', [ProductController::class, 'destroy'])->name('products.destroy');
+        // Route::get('/products', [ProductController::class, 'index'])->name('products.index');
+        // Route::get('/products/create', [ProductController::class, 'create'])->name('products.create');
+        // Route::post('/products', [ProductController::class, 'store'])->name('products.store');
+        // Route::get('/products/{product}', [ProductController::class, 'show'])->name('products.show');
+        // Route::get('/products/{product}/edit', [ProductController::class, 'edit'])->name('products.edit');
+        // Route::put('/products/{product}', [ProductController::class, 'update'])->name('products.update');
+        // Route::delete('/products/{product}', [ProductController::class, 'destroy'])->name('products.destroy');
 
 
 
