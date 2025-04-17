@@ -9,114 +9,83 @@ use App\Livewire\Product\Forms\ProductForm;
 use Livewire\Component;
 use Livewire\Attributes\On;
 use Livewire\Attributes\Computed;
+use Illuminate\Support\Facades\Session;
 
 class ProductCrud extends Component
 {
 
-    public $products;
-    
-    #[\Livewire\Attributes\Locked] 
-    public $id;
-
-    public $number = 12;
-
-    #[\Livewire\Attributes\Locked]
-    public string $readonly = '';
-
-    #[Url] 
-    public $search = '';
-
-    public $bookmarks;
+        
+    /*
+    Buat CRUD menggunakan
+    - Locked Properties
+    - URL Query Parameters
+    - Forms
+    - Validation
+    */
 
     use \Mary\Traits\Toast;
 
 
-    public ProductForm $form; 
+    #[Locked] 
+    public $id;
+
+    public ProductForm $masterForm;
 
     public function mount()
     {
-
-        $this->bookmarks = [
-            ['id_user' => 1, 'id_product' => 1],
-            ['id_user' => 3, 'id_product' => 3],
-            ['id_user' => 5, 'id_product' => 5],
-            ['id_user' => 6, 'id_product' => 6],
-            ['id_user' => 8, 'id_product' => 8],
-        ];
-
-        if ($this->id && $this->readonly) {
-            $this->show();
-          } else if ($this->id) {
-            $this->edit();
-          } else {
-            $this->create();
-        }
-
-    }
-
-
-    #[Computed]
-    public function getBookmarkedProducts()
-    {
-        $productIds = array_column($this->bookmarks, 'id_product');
-        return in_array($this->id, $productIds);
-    }
- 
-
-    #[On('product-updated')] 
-    public function cekUpdated()
-    {
-        
-    }
-
-
-    #[On('product-updated')] 
-    public function gantiValueNumber()
-    {
-        $this->number = 20;
-        $this->dispatch('value-number-diubah', number:$this->number);
-
+       if($this->id){
+        $this->edit();
+       }else{
+        $this->create();
+       }
     }
 
     public function create()
     {
+        $this->masterForm->reset();
+
     }
 
     public function store()
     {
-        $this->validate();
+        $validatedForm = $this->validate(
+            $this->masterForm->rules(),
+            [],
+            $this->masterForm->attributes()
+        )['masterForm'];
 
         $products = Product::create([
-            'name' => $this->name,
-            'detail' => $this->detail,
+            'name' => $validatedForm['name'],
+            'detail' => $validatedForm['detail'],
         ]);
 
         if($products){
             $this->success('Product berhasil ditambahkan');
+            $this->dispatch('product-created');
         }else{
             $this->success('Product gagal ditambahkan');
         }
-        
+
     }
 
     public function edit()
     {
         $product = Product::findOrFail($this->id);
-        $this->form->name = $product->name;
-        $this->form->detail = $product->detail;
+        $this->masterForm->name = $product->name;
+        $this->masterForm->detail = $product->detail;
     }
 
     public function update()
     {
-
-        $this->validate();
-
+        $validatedForm = $this->validate(
+            $this->masterForm->rules(),
+            [],
+            $this->masterForm->attributes()
+        )['masterForm'];
+        
         $product = Product::findOrFail($this->id);
 
-        $updated = $product->update([
-            'name' => $this->form->name,
-            'detail' => $this->form->detail,
-        ]);
+        $updated = $product->update($validatedForm);
     
         if ($updated) {
             $this->success('Product berhasil diupdate');
@@ -125,13 +94,6 @@ class ProductCrud extends Component
             $this->error('Product gagal diupdate');
         }
 
-
-    //   $this->redirect('/product');
-
-    }
-    
-    public function delete()
-    {
     }
 
     public function render()

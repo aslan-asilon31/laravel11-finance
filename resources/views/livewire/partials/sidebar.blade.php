@@ -5,11 +5,7 @@
         <div class="flex items-center justify-center w-full">
             <img src="{{ asset('my-logo-aslan-circle90x90.png') }}" alt="" srcset="">
         </div>
-            @if(Auth::check())
-                <p>Welcome, {{ Auth::user()->name }}!</p>
-            @else
-                <p>You are not logged in.</p>
-            @endif
+
         {{-- MENU --}}
         <x-menu activate-by-route>
 
