@@ -19,7 +19,7 @@ class ListDashboard extends Component
     protected $url = '/dashboard';
 
 
-    public bool $drawer = false;
+    public bool $showDrawer3 = false;
 
     public array $sortBy = ['column' => 'name', 'direction' => 'asc'];
 

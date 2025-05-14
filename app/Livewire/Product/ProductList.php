@@ -13,16 +13,12 @@ use Livewire\WithPagination;
 
 class ProductList extends Component
 {
-    /*
-    Tampilkan data product dari database  menggunakan
-    1. Computed Property
-    2. Pagination
-    */
-    
     
     use WithPagination;
 
-    // public $products;
+    public $title = "Product";
+    public $url = "/product";
+
     public $productPaginators;
 
     #[Locked] 
@@ -36,6 +32,15 @@ class ProductList extends Component
     public function mount()
     {
 
+    }
+
+    public function toggleSold($productId)
+    {
+        $product = Product::find($productId);
+        if ($product) {
+            $product->is_sold = !$product->is_sold;
+            $product->save();
+        }
     }
 
     public function openModal($id)
@@ -56,10 +61,15 @@ class ProductList extends Component
         return Product::find($this->productId);
     }
 
+    #[Computed]
+    public function productCount()
+    {
+        return Product::count();
+    }
+
     public function render()
     {
-        return view('livewire.product.product-list')
-        ->layout('components.layouts.app_visitor');
+        return view('livewire.product.product-list');
     }
 
 }

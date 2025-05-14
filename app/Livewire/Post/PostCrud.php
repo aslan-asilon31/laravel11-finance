@@ -1,6 +1,6 @@
 <?php
 
-namespace App\Livewire\Product;
+namespace App\Livewire\Post;
 use Livewire\Attributes\Layout;
 use App\Models\Product;
 use Livewire\Attributes\Locked;
@@ -11,7 +11,7 @@ use Livewire\Attributes\On;
 use Livewire\Attributes\Computed;
 use Illuminate\Support\Facades\Session;
 
-class ProductCrud extends Component
+class PostCrud extends Component
 {
 
         
@@ -29,20 +29,13 @@ class ProductCrud extends Component
     #[Locked] 
     public $id;
 
-    public $title ;
-    public $url ;
-
     public ProductForm $masterForm;
 
     public function mount()
     {
        if($this->id){
-        $this->title = "Product Edit";
-        $this->url = "product/edit";
         $this->edit();
        }else{
-        $this->title = "Product Create";
-        $this->url = "product/create";
         $this->create();
        }
     }
@@ -81,15 +74,6 @@ class ProductCrud extends Component
         $this->masterForm->name = $product->name;
         $this->masterForm->detail = $product->detail;
     }
-
- 
-    #[Computed]
-    public function user()
-    {
-        return Product::find($this->id);
-    }
-
-
 
     public function update()
     {
