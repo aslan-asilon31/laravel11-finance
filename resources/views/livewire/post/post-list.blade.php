@@ -1,5 +1,6 @@
 <div>
 
+  <x-button label="Export Fast Excel" wire:click="exportFastExcel" />
 
   <x-card :title="$title" shadow separator class="border shadow">
 

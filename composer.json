@@ -13,6 +13,7 @@
         "laravel/ui": "^4.6",
         "livewire/livewire": "^3.6",
         "power-components/livewire-powergrid": "^6.2",
+        "rap2hpoutre/fast-excel": "^5.6",
         "robsontenorio/mary": "^1.41",
         "spatie/laravel-permission": "^6.16"
     },

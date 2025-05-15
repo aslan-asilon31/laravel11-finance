@@ -5,6 +5,7 @@ namespace App\Livewire\Post;
 use Livewire\Attributes\Layout;
 use App\Models\Post;
 use App\Models\Product;
+use Rap2hpoutre\FastExcel\FastExcel;
 use App\Models\User;
 use Illuminate\Support\Facades\Log;
 use Livewire\Attributes\Locked;
@@ -109,6 +110,14 @@ class PostList extends Component
     public function decrement()
     {
         $this->count--;
+    }
+
+    public function exportFastExcel()
+    {
+        $posts = Post::all();
+
+        // Export all users
+        (new FastExcel($posts))->export('posts.xlsx');
     }
 
     public function get($todo)
