@@ -13,6 +13,9 @@ use App\Http\Controllers\LanguageController;
 // });
 
 
+Route::get('/company',  App\Livewire\Admin\Company\CompanyList::class)->name('company-list');
+
+
 Route::get('/', App\Livewire\Auth\Login::class)->name('login');
 
 Route::get('/dashboard', ListDashboard::class)->name('dashboard');
@@ -72,6 +75,8 @@ Route::delete('/roles/{role}', [RoleController::class, 'destroy'])->name('roles.
 
 
 Route::get('/post', App\Livewire\Post\PostList::class)->name('posts.index');
+
+
 
 
 // });

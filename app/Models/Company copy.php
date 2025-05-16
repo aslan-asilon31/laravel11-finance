@@ -24,9 +24,8 @@ use Illuminate\Database\Eloquent\Relations\HasOne;
 // use Wallo\FilamentCompanies\Events\CompanyCreated;
 // use Wallo\FilamentCompanies\Events\CompanyDeleted;
 // use Wallo\FilamentCompanies\Events\CompanyUpdated;
-use Illuminate\Database\Eloquent\Model;
 
-class Company extends  Model
+class Company extends  Component
 {
     use HasFactory;
 
@@ -44,19 +43,21 @@ class Company extends  Model
      *
      * @var array<int, string>
      */
-    protected $guarded = [''];
-    protected $table = 'companies';
+    protected $fillable = [
+        'name',
+        'personal_company',
+    ];
 
     /**
      * The event map for the model.
      *
      * @var array<string, class-string>
      */
-    // protected $dispatchesEvents = [
-    //     'created' => CompanyCreated::class,
-    //     'updated' => CompanyUpdated::class,
-    //     'deleted' => CompanyDeleted::class,
-    // ];
+    protected $dispatchesEvents = [
+        'created' => CompanyCreated::class,
+        'updated' => CompanyUpdated::class,
+        'deleted' => CompanyDeleted::class,
+    ];
 
     public function getFilamentAvatarUrl(): ?string
     {

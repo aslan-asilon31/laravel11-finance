@@ -125,12 +125,10 @@ class PostList extends Component
         return count($todo);
     }
 
-
     public function save() {}
 
     public function render()
     {
-        return view('livewire.post.post-list')
-            ->layout('components.layouts.app_visitor');
+        return view('livewire.post.post-list');
     }
 }
