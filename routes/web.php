@@ -21,16 +21,39 @@ Route::get('/', App\Livewire\Auth\Login::class)->name('login');
 Route::get('/dashboard', ListDashboard::class)->name('dashboard');
 
 Route::get('/product',  App\Livewire\Product\ProductList::class)->name('product-list');
-// Route::get('/',  App\Livewire\Product\ProductList::class)->name('product-list');
 Route::get('/product/create',  App\Livewire\Product\ProductCrud::class)->name('product-crud');
 Route::get('/product/edit/{id}',  App\Livewire\Product\ProductCrud::class)->name('product-crud');
 
-Route::get('/post',  App\Livewire\Post\PostList::class)->name('post-list');
-Route::get('/',  App\Livewire\Post\PostList::class)->name('post-list');
-Route::get('/post/create',  App\Livewire\Post\PostCrud::class)->name('post-crud');
-Route::get('/post/edit/{id}',  App\Livewire\Post\PostCrud::class)->name('post-crud');
 
-Route::get('/post',  App\Livewire\Post\PostList::class)->name('post-list');
+Route::get('/posts',  App\Livewire\Post\PostList::class)->name('post-list');
+Route::get('/posts/create',  App\Livewire\Post\PostCrud::class)->name('post-crud');
+Route::get('/posts/edit/{id}',  App\Livewire\Post\PostCrud::class)->name('post-crud');
+
+Route::get('/users',  App\Livewire\User1\UserList::class)->name('user-list');
+Route::get('/users/create',  App\Livewire\User1\UserCrud::class)->name('user-crud');
+Route::get('/users/edit/{id}',  App\Livewire\User1\UserCrud::class)->name('user-crud');
+
+
+Route::get('/images',  App\Livewire\Image\ImageList::class)->name('image-list');
+Route::get('/images/create',  App\Livewire\Image\ImageCrud::class)->name('image-crud');
+Route::get('/images/edit/{id}',  App\Livewire\Image\ImageCrud::class)->name('image-crud');
+
+
+
+Route::get('/videos',  App\Livewire\Video\VideoList::class)->name('video-list');
+Route::get('/videos/create',  App\Livewire\Video\VideoCrud::class)->name('video-crud');
+Route::get('/videos/edit/{id}',  App\Livewire\Video\VideoCrud::class)->name('video-crud');
+
+
+Route::get('/comments',  App\Livewire\Comment\CommentList::class)->name('video-list');
+Route::get('/comments/create',  App\Livewire\Comment\CommentCrud::class)->name('video-crud');
+Route::get('/comments/edit/{id}',  App\Livewire\Comment\CommentCrud::class)->name('video-crud');
+
+
+Route::get('/tags',  App\Livewire\Tag\TagList::class)->name('video-list');
+Route::get('/tags/create',  App\Livewire\Tag\TagCrud::class)->name('video-crud');
+Route::get('/tags/edit/{id}',  App\Livewire\Tag\TagCrud::class)->name('video-crud');
+
 
 
 // Route::middleware('auth:sanctum')->group(function () {
@@ -49,13 +72,13 @@ Route::group(['prefix' => '{locale}', 'where' => ['locale' => 'en|id|jp'], 'midd
     Route::get('/dashboard', ListDashboard::class)->name('dashboard');
 });
 
-Route::get('/users', [App\Http\Controllers\UserController::class, 'index'])->name('users.index');
-Route::get('/users/create', [UserController::class, 'create'])->name('users.create');
-Route::post('/users', [UserController::class, 'store'])->name('users.store');
-Route::get('/users/{user}', [UserController::class, 'show'])->name('users.show');
-Route::get('/users/{user}/edit', [UserController::class, 'edit'])->name('users.edit');
-Route::put('/users/{user}', [UserController::class, 'update'])->name('users.update');
-Route::delete('/users/{user}', [UserController::class, 'destroy'])->name('users.destroy');
+// Route::get('/users', [App\Http\Controllers\UserController::class, 'index'])->name('users.index');
+// Route::get('/users/create', [UserController::class, 'create'])->name('users.create');
+// Route::post('/users', [UserController::class, 'store'])->name('users.store');
+// Route::get('/users/{user}', [UserController::class, 'show'])->name('users.show');
+// Route::get('/users/{user}/edit', [UserController::class, 'edit'])->name('users.edit');
+// Route::put('/users/{user}', [UserController::class, 'update'])->name('users.update');
+// Route::delete('/users/{user}', [UserController::class, 'destroy'])->name('users.destroy');
 
 Route::get('/roles', [RoleController::class, 'index'])->name('roles.index');
 Route::get('/roles/create', [RoleController::class, 'create'])->name('roles.create');

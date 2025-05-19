@@ -18,7 +18,7 @@
         @endscope
 
         @scope('cell_url', $row)
-            <img src="{{ $row->image }}" class="w-16 h-16" alt="" srcset="">
+            <img src="{{ $row->url }}" class="w-16 h-16" alt="" srcset="">
         @endscope
 
         @scope('cell_action', $row)

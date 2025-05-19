@@ -17,10 +17,6 @@
           {{ $row->no_urut }}
         @endscope
 
-        @scope('cell_url', $row)
-            <img src="{{ $row->image }}" class="w-16 h-16" alt="" srcset="">
-        @endscope
-
         @scope('cell_action', $row)
           <x-dropdown class="btn-xs">
             <x-menu-item class="" title="Edit" icon="o-pencil-square" link="/products/edit/{{ $row->id }}" />

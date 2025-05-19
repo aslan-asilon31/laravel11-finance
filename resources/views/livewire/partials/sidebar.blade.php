@@ -24,7 +24,15 @@
         <a href="{{ route('set-language', ['locale' => 'jp']) }}" class="menu-item">Japan</a>
         <a href="{{ route('set-language', ['locale' => 'id']) }}" class="menu-item">Indonesia</a>
       </x-menu-sub>
-      <x-menu-separator title="Roles & Permissions" icon="o-sparkles" />
+      <x-menu-separator title="Test" icon="o-sparkles" />
+      <x-menu-item title="Post" icon="o-home" link="/posts" :class="request()->is('post') ? 'active' : ''" />
+      <x-menu-item title="User" icon="o-home" link="/users" :class="request()->is('user') ? 'active' : ''" />
+      <x-menu-item title="Image" icon="o-home" link="/images" :class="request()->is('image') ? 'active' : ''" />
+      <x-menu-item title="Video" icon="o-home" link="/videos" :class="request()->is('video') ? 'active' : ''" />
+      <x-menu-item title="Comment" icon="o-home" link="/comments" :class="request()->is('comment') ? 'active' : ''" />
+      <x-menu-item title="Tag" icon="o-home" link="/tags" :class="request()->is('tag') ? 'active' : ''" />
+
+        <x-menu-separator title="Roles & Permissions" icon="o-sparkles" />
       <x-menu-item title="{{ __('dashboard.roles') }}" icon="o-home" link="/role" :class="request()->is('dasbor') ? 'active' : ''" />
       <x-menu-item title="{{ __('dashboard.permissions') }}" icon="o-home" link="/permission" :class="request()->is('dasbor') ? 'active' : ''" />
 

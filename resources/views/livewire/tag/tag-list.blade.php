@@ -17,21 +17,12 @@
           {{ $row->no_urut }}
         @endscope
 
-        @scope('cell_url', $row)
-            <img src="{{ $row->image }}" class="w-16 h-16" alt="" srcset="">
-        @endscope
-
         @scope('cell_action', $row)
           <x-dropdown class="btn-xs">
-            <x-menu-item class="" title="Edit" icon="o-pencil-square" link="/products/edit/{{ $row->id }}" />
+            <x-menu-item class="" title="Edit" icon="o-pencil-square" link="/tags/edit/{{ $row->id }}" />
             <x-menu-item class="" title="Show" icon="o-eye"
-              link="/products/show/{{ $row->id }}/readonly" />
+              link="/tags/show/{{ $row->id }}/readonly" />
           </x-dropdown>
-        @endscope
-
-        @scope('cell_is_activated', $row)
-          <x-badge :value="$row->is_activated == 1 ? 'Yes' : 'No'"
-            class=" {{ $row->is_activated == 1 ? 'badge-primary badge-soft' : 'badge-error  badge-soft' }}" />
         @endscope
 
       </x-table>

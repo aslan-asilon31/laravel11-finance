@@ -1,9 +1,9 @@
 <?php
 
-namespace App\Livewire\Post;
+namespace App\Livewire\Video;
 
 use Livewire\Attributes\Layout;
-use App\Models\Post;
+use App\Models\Video;
 use App\Models\Product;
 use Rap2hpoutre\FastExcel\FastExcel;
 use App\Models\User;
@@ -17,10 +17,10 @@ use Livewire\WithFileUploads;
 use Illuminate\Pagination\LengthAwarePaginator;
 use Mary\Traits\Toast;
 
-class PostList extends Component
+class VideoList extends Component
 {
-    public $title = "post";
-    public $url = "/post";
+    public $title = "video";
+    public $url = "/video";
 
     use WithFileUploads;
 
@@ -43,8 +43,7 @@ class PostList extends Component
     public array $filters = [];
     public array $filterForm = [
         'title' => '',
-        'content' => '',
-        'is_activated' => '',
+        'url' => '',
         'created_at' => '',
     ];
 
@@ -67,10 +66,8 @@ class PostList extends Component
             ['key' => 'action', 'label' => 'Action', 'sortable' => false, 'class' => 'whitespace-nowrap border-1 border-l-1 border-gray-300 dark:border-gray-600 text-center'],
             ['key' => 'no_urut', 'label' => '#', 'sortable' => false, 'class' => 'whitespace-nowrap  border-1 border-l-1 border-gray-300 dark:border-gray-600 text-right'],
             ['key' => 'id', 'label' => 'ID', 'sortBy' => 'id', 'class' => 'whitespace-nowrap  border-1 border-l-1 border-gray-300 dark:border-gray-600 text-left'],
-            ['key' => 'image', 'label' => 'Image', 'sortBy' => 'content',  'class' => 'whitespace-nowrap  border-1 border-l-1 border-gray-300 dark:border-gray-600 text-left'],
-            ['key' => 'comment_body', 'label' => 'Comment', 'sortBy' => 'comment_body', 'class' => 'whitespace-nowrap  border-1 border-l-1 border-gray-300 dark:border-gray-600 text-left'],
-            ['key' => 'content', 'label' => 'Content', 'sortBy' => 'content',  'class' => 'whitespace-nowrap  border-1 border-l-1 border-gray-300 dark:border-gray-600 text-left'],
-            ['key' => 'tag', 'label' => 'Tag', 'sortBy' => 'content',  'class' => 'whitespace-nowrap  border-1 border-l-1 border-gray-300 dark:border-gray-600 text-left'],
+            ['key' => 'title', 'label' => 'Comment', 'sortBy' => 'title', 'class' => 'whitespace-nowrap  border-1 border-l-1 border-gray-300 dark:border-gray-600 text-left'],
+            ['key' => 'url', 'label' => 'url', 'sortBy' => 'url',  'class' => 'whitespace-nowrap  border-1 border-l-1 border-gray-300 dark:border-gray-600 text-left'],
             ['key' => 'created_at', 'label' => 'Created At', 'format' => ['date', 'Y-m-d H:i:s'], 'sortBy' => 'created_at', 'class' => 'whitespace-nowrap  border-1 border-l-1 border-gray-300 dark:border-gray-600 text-center']
         ];
     }
@@ -79,12 +76,12 @@ class PostList extends Component
     public function rows(): LengthAwarePaginator
     {
 
-        $query = Post::query();
+        $query = Video::query();
+
+
         $query->when($this->search, fn($q) => $q->where('title', 'like', "%{$this->search}%"))
-            ->when(($this->filters['content'] ?? ''), fn($q) => $q->where('content', $this->filters['content']))
-            ->when(($this->filters['']->image->url ?? ''), fn($q) => $q->where('url', $this->filters['content']->image->url))
-            ->when(($this->filters['']->comments->body ?? ''), fn($q) => $q->where('content', $this->filters['content']->comments->body))
-            ->when(($this->filters['']->tags->name ?? ''), fn($q) => $q->where('name', $this->filters['content']->tags->name))
+
+            ->when(($this->filters['url'] ?? ''), fn($q) => $q->where('url', $this->filters['url']))
             ->when(($this->filters['created_at'] ?? ''), function ($q) {
                 $dateTime = $this->filters['created_at'];
                 $dateOnly = substr($dateTime, 0, 10);
@@ -92,18 +89,18 @@ class PostList extends Component
             });
 
         $paginator = $query
+            ->with('comments')
             ->orderBy(...array_values($this->sortBy))
             ->paginate(20);
-            $paginator->getCollection()->loadMissing(['comments', 'tags', 'image']);
 
         $start = ($paginator->currentPage() - 1) * $paginator->perPage();
+
         $paginator->getCollection()->transform(function ($item, $key) use ($start) {
-            $item->comment_body = optional($item->comments->first())->body ?? '-';
-            $item->tag = optional($item->tags->first())->name ?? '-';
-            $item->image = optional($item->image)->url ?? '-';
+            $item->title = optional($item->comments->first())->body ?? '-';
             $item->no_urut = $start + $key + 1;
             return $item;
         });
+
         return $paginator;
     }
 
@@ -114,10 +111,9 @@ class PostList extends Component
 
     public function exportFastExcel()
     {
-        $posts = Post::all();
+        $videos = Video::all();
 
-        // Export all users
-        (new FastExcel($posts))->export('posts.xlsx');
+        (new FastExcel($videos))->export('videos.xlsx');
     }
 
     public function get($todo)
@@ -129,6 +125,6 @@ class PostList extends Component
 
     public function render()
     {
-        return view('livewire.post.post-list');
+        return view('livewire.video.video-list');
     }
 }

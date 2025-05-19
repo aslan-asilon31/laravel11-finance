@@ -22,17 +22,35 @@ use Laravel\Sanctum\HasApiTokens;
 // use Wallo\FilamentCompanies\HasProfilePhoto;
 // use Wallo\FilamentCompanies\SetsProfilePhotoFromUrl;
 use Spatie\Permission\Traits\HasRoles;
+use Illuminate\Database\Eloquent\Relations\MorphOne;
 
 class User extends Authenticatable
 {
     use HasApiTokens;
     use HasRoles;
-    // use HasCompanies;
-    // use HasConnectedAccounts;
     use HasFactory;
-    // use HasProfilePhoto;
     use Notifiable;
-    // use SetsProfilePhotoFromUrl;
+
+
+    public function image(): MorphOne
+    {
+        return $this->morphOne(Image::class, 'imageable');
+    }
+
+    public function latestImage(): MorphOne
+    {
+        return $this->morphOne(Image::class, 'imageable')->latestOfMany();
+    }
+
+    public function oldestImage(): MorphOne
+    {
+        return $this->morphOne(Image::class, 'imageable')->oldestOfMany();
+    }
+
+    public function bestImage(): MorphOne
+    {
+        return $this->morphOne(Image::class, 'imageable')->ofMany('likes', 'max');
+    }
 
     /**
      * The attributes that are mass assignable.
