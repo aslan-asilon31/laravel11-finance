@@ -13,20 +13,26 @@ use Illuminate\Support\Facades\App;
 use Illuminate\Support\Facades\Session;
 use Illuminate\Support\Facades\Redirect;
 use Livewire\Attributes\Url;
+use App\Helpers\Sidebar\Traits\WithSidebarMenu;
 
 
 class Sidebar extends Component
 {
-
+    use WithSidebarMenu;
     public string $title = '';
-    public $id ;
-    public $lang ;
+    public $id;
+    public $lang;
+    public $menuList;
 
     #[On('change-language')]
     public function mount()
     {
         App::setLocale(App::getLocale());
 
+        $allMenus = $this->getSidebarMenu();
+        $request = request();
+        $prefix = $request->route()?->getPrefix();
+        $this->menuList = $allMenus[$prefix];
     }
 
     #[On('change-language')]
@@ -34,13 +40,11 @@ class Sidebar extends Component
     {
         $this->lang = $title;
         App::setLocale($this->lang);
-
     }
 
     public function render()
     {
         return view('livewire.partials.sidebar')
-        ->title($this->title);
+            ->title($this->title);
     }
-
 }

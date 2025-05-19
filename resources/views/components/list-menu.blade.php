@@ -1,4 +1,11 @@
-<x-header title="{{ $title }}" subtitle="" separator>
+<div>
+  <x-button label="Accounting" link="/accounting/dashboard" class="bg-[#800080] btn-sm text-white" />
+  <x-button label="Warehouse" link="/warehouse/dashboard" class="bg-[#800080] btn-sm text-white" />
+  <x-button label="Finance" link="/finance/dashboard" class="bg-[#800080] btn-sm text-white" />
+  <x-button label="Marketing" link="/marketing/dashboard" class="bg-[#800080] btn-sm text-white" />
+</div>
+
+<x-header title="{{ $title }}" subtitle="" class="text-xs" separator>
   <x-slot:actions>
     @if (empty($id))
       @if ('/' . request()->path() == $url . '/create')

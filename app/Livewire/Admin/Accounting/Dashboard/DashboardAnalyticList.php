@@ -1,6 +1,6 @@
 <?php
 
-namespace App\Livewire\Admin\Dashboard;
+namespace App\Livewire\Admin\Accounting\Dashboard;
 
 use Livewire\Component;
 use Mary\Traits\Toast;
@@ -13,7 +13,7 @@ use Illuminate\Support\Facades\Redirect;
 use Livewire\Attributes\Url;
 
 
-class ListDashboard extends Component
+class DashboardAnalyticList extends Component
 {
     use Toast;
     protected $url = '/dashboard';
@@ -23,11 +23,11 @@ class ListDashboard extends Component
 
     public array $sortBy = ['column' => 'name', 'direction' => 'asc'];
 
-    public $setLang ;
-    public $title = "Dashboard" ;
+    public $setLang;
+    public $title = "Dashboard";
 
-    public $id ;
-    public $lang ;
+    public $id;
+    public $lang;
 
     #[Url]
     public $search = '';
@@ -83,7 +83,6 @@ class ListDashboard extends Component
     public function mount()
     {
         App::setLocale(Route::current()->parameter('locale'));
-
     }
 
     public function changeLanguage($id)
@@ -96,8 +95,7 @@ class ListDashboard extends Component
 
             App::setLocale($this->lang);
 
-            $this->dispatch('change-language',title:$this->lang);
-
+            $this->dispatch('change-language', title: $this->lang);
         } else {
             session()->flash('error', 'Invalid language code');
         }
@@ -149,10 +147,9 @@ class ListDashboard extends Component
 
     public function render()
     {
-        return view('livewire.admin.dashboard.list-dashboard', [
+        return view('livewire.admin.dashboard.dashboard-analytic-list', [
             'users' => $this->users(),
             'headers' => $this->headers()
         ]);
     }
 }
-

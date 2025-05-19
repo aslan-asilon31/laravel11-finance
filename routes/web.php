@@ -13,16 +13,12 @@ use App\Http\Controllers\LanguageController;
 // });
 
 
-Route::get('/company',  App\Livewire\Admin\Company\CompanyList::class)->name('company-list');
 
 
 Route::get('/', App\Livewire\Auth\Login::class)->name('login');
 
-Route::get('/dashboard', ListDashboard::class)->name('dashboard');
 
-Route::get('/product',  App\Livewire\Product\ProductList::class)->name('product-list');
-Route::get('/product/create',  App\Livewire\Product\ProductCrud::class)->name('product-crud');
-Route::get('/product/edit/{id}',  App\Livewire\Product\ProductCrud::class)->name('product-crud');
+
 
 
 Route::get('/posts',  App\Livewire\Post\PostList::class)->name('post-list');
@@ -69,8 +65,40 @@ Route::get('/permission/edit/{id}', App\Livewire\Admin\Permission\PermissionCrud
 
 Route::group(['prefix' => '{locale}', 'where' => ['locale' => 'en|id|jp'], 'middleware' => 'language'], function () {
     Route::get('/set-language', [LanguageController::class, 'setLanguage'])->name('set-language');
-    Route::get('/dashboard', ListDashboard::class)->name('dashboard');
+    // Route::get('/dashboard', ListDashboard::class)->name('dashboard');
 });
+
+
+
+
+
+
+Route::prefix('/accounting')->group(function () {
+
+    Route::get('/dashboard',  App\Livewire\Admin\Accounting\Dashboard\DashboardList::class)->name('dashboard-list');
+    Route::get('/dashboard-analytic',  App\Livewire\Admin\Accounting\Dashboard\DashboardAnalyticList::class)->name('dashboard-analytic-list');
+
+    Route::get('/accounts',  App\Livewire\Admin\Accounting\Account\AccountList::class)->name('account-list');
+    Route::get('/accounts/create',  App\Livewire\Admin\Accounting\Account\AccountCrud::class)->name('account-crud');
+    Route::get('/accounts/edit/{id}',  App\Livewire\Admin\Accounting\Account\AccountCrud::class)->name('account-crud');
+});
+
+Route::prefix('/human-resource')->group(function () {
+    Route::get('/dashboard',  App\Livewire\Admin\Accounting\Dashboard\DashboardList::class)->name('dashboard-list');
+
+    Route::get('/companies',  App\Livewire\Admin\Company\CompanyList::class)->name('company-list');
+    Route::get('/companies/create',  App\Livewire\Admin\Company\CompanyCrud::class)->name('company-crud');
+    Route::get('/companies/edit/{id}',  App\Livewire\Admin\Company\CompanyCrud::class)->name('company-crud');
+});
+
+Route::prefix('/warehouse')->group(function () {
+    Route::get('/dashboard',  App\Livewire\Admin\Warehouse\Dashboard\DashboardList::class)->name('dashboard-list');
+
+    Route::get('/products',  App\Livewire\Product\ProductList::class)->name('product-list');
+    Route::get('/products/create',  App\Livewire\Product\ProductCrud::class)->name('product-crud');
+    Route::get('/products/edit/{id}',  App\Livewire\Product\ProductCrud::class)->name('product-crud');
+});
+
 
 // Route::get('/users', [App\Http\Controllers\UserController::class, 'index'])->name('users.index');
 // Route::get('/users/create', [UserController::class, 'create'])->name('users.create');
@@ -98,7 +126,6 @@ Route::delete('/roles/{role}', [RoleController::class, 'destroy'])->name('roles.
 
 
 Route::get('/post', App\Livewire\Post\PostList::class)->name('posts.index');
-
 
 
 
