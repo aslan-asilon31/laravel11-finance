@@ -1,6 +1,6 @@
 <?php
 
-namespace App\Livewire\Admin\HumanResource\Dashboard;
+namespace App\Livewire\Admin\Marketing\Dashboard;
 
 use Livewire\Component;
 use Mary\Traits\Toast;

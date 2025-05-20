@@ -31,7 +31,7 @@ class Sidebar extends Component
 
         $allMenus = $this->getSidebarMenu();
         $request = request();
-        $prefix = $request->route()?->getPrefix();
+        $prefix = $request->route()?->getPrefix() ? $request->route()?->getPrefix() : '/accounting';
         $this->menuList = $allMenus[$prefix];
     }
 

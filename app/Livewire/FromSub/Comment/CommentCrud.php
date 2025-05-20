@@ -1,19 +1,18 @@
 <?php
 
-namespace App\Livewire\Image;
+namespace App\Livewire\FromSub\Comment;
 
 use Livewire\Attributes\Layout;
-use App\Models\Product;
-use App\Models\Image;
+use App\Models\Comment;
 use Livewire\Attributes\Locked;
 use Livewire\Attributes\Url;
-use App\Livewire\Image\Forms\ImageForm;
+use App\Livewire\Comment\Forms\CommentForm;
 use Livewire\Component;
 use Livewire\Attributes\On;
 use Livewire\Attributes\Computed;
 use Illuminate\Support\Facades\Session;
 
-class ImageCrud extends Component
+class CommentCrud extends Component
 {
 
 
@@ -31,7 +30,7 @@ class ImageCrud extends Component
     #[Locked]
     public $id;
 
-    public ImageForm $masterForm;
+    public CommentForm $masterForm;
 
     public function mount()
     {
@@ -55,26 +54,24 @@ class ImageCrud extends Component
             $this->masterForm->attributes()
         )['masterForm'];
 
-        $images = Image::create([
-            'url' => $validatedForm['url'],
-            'imageable_id' => $validatedForm['imageable_id'],
-            'imageable_type' => $validatedForm['imageable_type'],
+        $comments = Comment::create([
+            'name' => $validatedForm['name'],
+            'detail' => $validatedForm['detail'],
         ]);
 
-        if ($images) {
-            $this->success('Image berhasil ditambahkan');
-            $this->dispatch('Image-created');
+        if ($comments) {
+            $this->success('Comment berhasil ditambahkan');
+            $this->dispatch('comment-created');
         } else {
-            $this->success('Image gagal ditambahkan');
+            $this->success('Comment gagal ditambahkan');
         }
     }
 
     public function edit()
     {
-        $image = Image::findOrFail($this->id);
-        $this->masterForm->url = $image->url;
-        $this->masterForm->imageable_id = $image->imageable_id;
-        $this->masterForm->imageable_url = $image->imageable_url;
+        $comment = Comment::findOrFail($this->id);
+        $this->masterForm->name = $comment->name;
+        $this->masterForm->detail = $comment->detail;
     }
 
     public function update()
@@ -85,21 +82,20 @@ class ImageCrud extends Component
             $this->masterForm->attributes()
         )['masterForm'];
 
-        $image = Image::findOrFail($this->id);
+        $comment = Comment::findOrFail($this->id);
 
-        $updated = $image->update($validatedForm);
+        $updated = $comment->update($validatedForm);
 
         if ($updated) {
-            $this->success('Image berhasil diupdate');
-            $this->dispatch('image-updated');
+            $this->success('Comment berhasil diupdate');
+            $this->dispatch('comment-updated');
         } else {
-            $this->error('Image gagal diupdate');
+            $this->error('Comment gagal diupdate');
         }
     }
 
     public function render()
     {
-        return view('livewire.image.image-crud')
-            ->layout('components.layouts.app_visitor');
+        return view('livewire.comment.comment-crud');
     }
 }

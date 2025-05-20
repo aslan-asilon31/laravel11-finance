@@ -1,6 +1,6 @@
 <?php
 
-namespace App\Livewire\Image;
+namespace App\Livewire\FromSub\Image;
 
 use Livewire\Attributes\Layout;
 use App\Models\Product;

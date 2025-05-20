@@ -1,19 +1,18 @@
 <?php
 
-namespace App\Livewire\Image;
+namespace App\Livewire\FromSub\Tag;
 
 use Livewire\Attributes\Layout;
 use App\Models\Product;
-use App\Models\Image;
 use Livewire\Attributes\Locked;
 use Livewire\Attributes\Url;
-use App\Livewire\Image\Forms\ImageForm;
+use App\Livewire\Product\Forms\ProductForm;
 use Livewire\Component;
 use Livewire\Attributes\On;
 use Livewire\Attributes\Computed;
 use Illuminate\Support\Facades\Session;
 
-class ImageCrud extends Component
+class TagCrud extends Component
 {
 
 
@@ -31,7 +30,7 @@ class ImageCrud extends Component
     #[Locked]
     public $id;
 
-    public ImageForm $masterForm;
+    public ProductForm $masterForm;
 
     public function mount()
     {
@@ -55,26 +54,24 @@ class ImageCrud extends Component
             $this->masterForm->attributes()
         )['masterForm'];
 
-        $images = Image::create([
-            'url' => $validatedForm['url'],
-            'imageable_id' => $validatedForm['imageable_id'],
-            'imageable_type' => $validatedForm['imageable_type'],
+        $products = Product::create([
+            'name' => $validatedForm['name'],
+            'detail' => $validatedForm['detail'],
         ]);
 
-        if ($images) {
-            $this->success('Image berhasil ditambahkan');
-            $this->dispatch('Image-created');
+        if ($products) {
+            $this->success('Product berhasil ditambahkan');
+            $this->dispatch('product-created');
         } else {
-            $this->success('Image gagal ditambahkan');
+            $this->success('Product gagal ditambahkan');
         }
     }
 
     public function edit()
     {
-        $image = Image::findOrFail($this->id);
-        $this->masterForm->url = $image->url;
-        $this->masterForm->imageable_id = $image->imageable_id;
-        $this->masterForm->imageable_url = $image->imageable_url;
+        $product = Product::findOrFail($this->id);
+        $this->masterForm->name = $product->name;
+        $this->masterForm->detail = $product->detail;
     }
 
     public function update()
@@ -85,21 +82,20 @@ class ImageCrud extends Component
             $this->masterForm->attributes()
         )['masterForm'];
 
-        $image = Image::findOrFail($this->id);
+        $product = Product::findOrFail($this->id);
 
-        $updated = $image->update($validatedForm);
+        $updated = $product->update($validatedForm);
 
         if ($updated) {
-            $this->success('Image berhasil diupdate');
-            $this->dispatch('image-updated');
+            $this->success('Product berhasil diupdate');
+            $this->dispatch('product-updated');
         } else {
-            $this->error('Image gagal diupdate');
+            $this->error('Product gagal diupdate');
         }
     }
 
     public function render()
     {
-        return view('livewire.image.image-crud')
-            ->layout('components.layouts.app_visitor');
+        return view('livewire.tag.tag-crud');
     }
 }

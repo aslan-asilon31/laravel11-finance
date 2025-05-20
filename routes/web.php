@@ -17,6 +17,7 @@ use App\Http\Controllers\LanguageController;
 
 Route::get('/', App\Livewire\Auth\Login::class)->name('login');
 
+Route::get('/',  App\Livewire\Admin\Accounting\Dashboard\DashboardList::class)->name('dashboard-list');
 
 
 
@@ -25,9 +26,6 @@ Route::get('/posts',  App\Livewire\Post\PostList::class)->name('post-list');
 Route::get('/posts/create',  App\Livewire\Post\PostCrud::class)->name('post-crud');
 Route::get('/posts/edit/{id}',  App\Livewire\Post\PostCrud::class)->name('post-crud');
 
-Route::get('/users',  App\Livewire\User1\UserList::class)->name('user-list');
-Route::get('/users/create',  App\Livewire\User1\UserCrud::class)->name('user-crud');
-Route::get('/users/edit/{id}',  App\Livewire\User1\UserCrud::class)->name('user-crud');
 
 
 Route::get('/images',  App\Livewire\Image\ImageList::class)->name('image-list');
@@ -72,6 +70,26 @@ Route::group(['prefix' => '{locale}', 'where' => ['locale' => 'en|id|jp'], 'midd
 
 
 
+Route::get('/from-sub/posts',  App\Livewire\FromSub\Post\PostList::class)->name('from-sub.post-list');
+Route::get('/from-sub/posts/create',  App\Livewire\FromSub\Post\PostCrud::class)->name('from-sub.post-crud');
+Route::get('/from-sub/posts/edit/{id}',  App\Livewire\FromSub\Post\PostCrud::class)->name('from-sub.post-crud');
+
+Route::get('/from-sub/images',  App\Livewire\FromSub\Image\ImageList::class)->name('from-sub.image-list');
+Route::get('/from-sub/images/create',  App\Livewire\FromSub\Image\ImageCrud::class)->name('from-sub.image-crud');
+Route::get('/from-sub/images/edit/{id}',  App\Livewire\FromSub\Image\ImageCrud::class)->name('from-sub.image-crud');
+
+Route::get('/from-sub/videos',  App\Livewire\FromSub\Video\VideoList::class)->name('from-sub.video-list');
+Route::get('/from-sub/videos/create',  App\Livewire\FromSub\Video\VideoCrud::class)->name('from-sub.video-crud');
+Route::get('/from-sub/videos/edit/{id}',  App\Livewire\FromSub\Video\VideoCrud::class)->name('from-sub.video-crud');
+
+Route::get('/from-sub/comments',  App\Livewire\FromSub\Comment\CommentList::class)->name('from-sub.video-list');
+Route::get('/from-sub/comments/create',  App\Livewire\FromSub\Comment\CommentCrud::class)->name('from-sub.video-crud');
+Route::get('/from-sub/comments/edit/{id}',  App\Livewire\FromSub\Comment\CommentCrud::class)->name('from-sub.video-crud');
+
+Route::get('/from-sub/tags',  App\Livewire\FromSub\Tag\TagList::class)->name('from-sub.video-list');
+Route::get('/from-sub/tags/create',  App\Livewire\FromSub\Tag\TagCrud::class)->name('from-sub.video-crud');
+Route::get('/from-sub/tags/edit/{id}',  App\Livewire\FromSub\Tag\TagCrud::class)->name('from-sub.video-crud');
+
 
 Route::prefix('/accounting')->group(function () {
 
@@ -83,12 +101,27 @@ Route::prefix('/accounting')->group(function () {
     Route::get('/accounts/edit/{id}',  App\Livewire\Admin\Accounting\Account\AccountCrud::class)->name('account-crud');
 });
 
+Route::prefix('/finance')->group(function () {
+    Route::get('/dashboard',  App\Livewire\Admin\Finance\Dashboard\DashboardList::class)->name('dashboard-list');
+    Route::get('/dashboard-analytic',  App\Livewire\Admin\Finance\Dashboard\DashboardAnalyticList::class)->name('dashboard-analytic-list');
+});
+
+Route::prefix('/marketing')->group(function () {
+    Route::get('/dashboard',  App\Livewire\Admin\Marketing\Dashboard\DashboardList::class)->name('dashboard-list');
+    Route::get('/dashboard-analytic',  App\Livewire\Admin\Marketing\Dashboard\DashboardAnalyticList::class)->name('dashboard-analytic-list');
+});
+
 Route::prefix('/human-resource')->group(function () {
-    Route::get('/dashboard',  App\Livewire\Admin\Accounting\Dashboard\DashboardList::class)->name('dashboard-list');
+    Route::get('/dashboard',  App\Livewire\Admin\HumanResource\Dashboard\DashboardList::class)->name('dashboard-list');
+    Route::get('/dashboard-analytic',  App\Livewire\Admin\HumanResource\Dashboard\DashboardAnalyticList::class)->name('dashboard-analytic-list');
 
     Route::get('/companies',  App\Livewire\Admin\Company\CompanyList::class)->name('company-list');
     Route::get('/companies/create',  App\Livewire\Admin\Company\CompanyCrud::class)->name('company-crud');
     Route::get('/companies/edit/{id}',  App\Livewire\Admin\Company\CompanyCrud::class)->name('company-crud');
+
+    Route::get('/users',  App\Livewire\User1\UserList::class)->name('user-list');
+    Route::get('/users/create',  App\Livewire\User1\UserCrud::class)->name('user-crud');
+    Route::get('/users/edit/{id}',  App\Livewire\User1\UserCrud::class)->name('user-crud');
 });
 
 Route::prefix('/warehouse')->group(function () {

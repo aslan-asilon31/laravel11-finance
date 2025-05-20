@@ -1,19 +1,18 @@
 <?php
 
-namespace App\Livewire\Image;
+namespace App\Livewire\FromSub\Video;
 
 use Livewire\Attributes\Layout;
-use App\Models\Product;
-use App\Models\Image;
+use App\Models\Video;
 use Livewire\Attributes\Locked;
 use Livewire\Attributes\Url;
-use App\Livewire\Image\Forms\ImageForm;
+use App\Livewire\Video\Forms\VideoForm;
 use Livewire\Component;
 use Livewire\Attributes\On;
 use Livewire\Attributes\Computed;
 use Illuminate\Support\Facades\Session;
 
-class ImageCrud extends Component
+class VideoCrud extends Component
 {
 
 
@@ -31,7 +30,7 @@ class ImageCrud extends Component
     #[Locked]
     public $id;
 
-    public ImageForm $masterForm;
+    public VideoForm $masterForm;
 
     public function mount()
     {
@@ -55,26 +54,24 @@ class ImageCrud extends Component
             $this->masterForm->attributes()
         )['masterForm'];
 
-        $images = Image::create([
+        $videos = Video::create([
+            'title' => $validatedForm['title'],
             'url' => $validatedForm['url'],
-            'imageable_id' => $validatedForm['imageable_id'],
-            'imageable_type' => $validatedForm['imageable_type'],
         ]);
 
-        if ($images) {
-            $this->success('Image berhasil ditambahkan');
-            $this->dispatch('Image-created');
+        if ($videos) {
+            $this->success('Video berhasil ditambahkan');
+            $this->dispatch('video-created');
         } else {
-            $this->success('Image gagal ditambahkan');
+            $this->success('Video gagal ditambahkan');
         }
     }
 
     public function edit()
     {
-        $image = Image::findOrFail($this->id);
-        $this->masterForm->url = $image->url;
-        $this->masterForm->imageable_id = $image->imageable_id;
-        $this->masterForm->imageable_url = $image->imageable_url;
+        $video = Video::findOrFail($this->id);
+        $this->masterForm->title = $video->title;
+        $this->masterForm->url = $video->url;
     }
 
     public function update()
@@ -85,21 +82,21 @@ class ImageCrud extends Component
             $this->masterForm->attributes()
         )['masterForm'];
 
-        $image = Image::findOrFail($this->id);
+        $video = Video::findOrFail($this->id);
 
-        $updated = $image->update($validatedForm);
+        $updated = $video->update($validatedForm);
 
         if ($updated) {
-            $this->success('Image berhasil diupdate');
-            $this->dispatch('image-updated');
+            $this->success('Video berhasil diupdate');
+            $this->dispatch('video-updated');
         } else {
-            $this->error('Image gagal diupdate');
+            $this->error('Video gagal diupdate');
         }
     }
 
     public function render()
     {
-        return view('livewire.image.image-crud')
+        return view('livewire.product.video-crud')
             ->layout('components.layouts.app_visitor');
     }
 }

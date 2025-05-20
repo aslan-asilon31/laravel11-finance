@@ -1,9 +1,9 @@
 <?php
 
-namespace App\Livewire\Admin\HumanResource\Dashboard;
+namespace App\Livewire\Admin\Finance\Dashboard;
 
 use Livewire\Component;
-use App\Models\HumanResource;
+use App\Models\Module;
 use Mary\Traits\Toast;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
@@ -37,20 +37,19 @@ class DashboardList extends Component
     protected $masterModel = '';
 
     // public $masterModule = \App\Models\Accounting\Account::class;
-    public $masterModule = 'HumanResource';
+    public $masterModule = 'Accounting';
     public $listMenu;
 
-    public function mount()
-    {
-
-        $allMenus = $this->getSidebarMenu();
-        $menus = $allMenus['/human-resource'];
-    }
+    public function mount() {}
 
 
     public function menuList()
     {
-        return $this->listMenu = \App\Models\Accounting\Account::class::get();
+        $allMenus = $this->getSidebarMenu();
+
+        $menus = $allMenus['Accounting'];
+
+        return $menus;
     }
 
 
