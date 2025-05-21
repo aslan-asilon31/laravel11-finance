@@ -14,40 +14,40 @@ class AccountSubtypeSeeder extends Seeder
      */
     public function run(): void
     {
-                // Membuat beberapa subtype akun
-                AccountSubtype::create([
-                    'company_id'=> 1,
-                    'name' => 'Cash and Cash Equivalents',
-                    'category' => 'Asset',
-                    'type' => 'Current',
-                ]);
+        // Membuat beberapa subtype akun
+        AccountSubtype::create([
+            'company_id' => 1,
+            'name' => 'Cash and Cash Equivalents',
+            'category' => 'Asset',
+            'type' => 'Current',
+        ]);
 
-                AccountSubtype::create([
-                    'company_id'=> 1,
-                    'name' => 'Sales Taxes',
-                    'category' => 'Liability',
-                    'type' => 'Current',
-                ]);
+        AccountSubtype::create([
+            'company_id' => 1,
+            'name' => 'Sales Taxes',
+            'category' => 'Liability',
+            'type' => 'Current',
+        ]);
 
-                AccountSubtype::create([
-                    'company_id'=> 1,
-                    'name' => 'Input Tax Recoverable',
-                    'category' => 'Asset',
-                    'type' => 'Current',
-                ]);
+        AccountSubtype::create([
+            'company_id' => 1,
+            'name' => 'Input Tax Recoverable',
+            'category' => 'Asset',
+            'type' => 'Current',
+        ]);
 
-                AccountSubtype::create([
-                    'company_id'=> 1,
-                    'name' => 'Sales Discounts',
-                    'category' => 'Revenue',
-                    'type' => 'Contra',
-                ]);
+        AccountSubtype::create([
+            'company_id' => 1,
+            'name' => 'Sales Discounts',
+            'category' => 'Revenue',
+            'type' => 'Contra',
+        ]);
 
-                AccountSubtype::create([
-                    'company_id'=> 1,
-                    'name' => 'Purchase Discounts',
-                    'category' => 'Expense',
-                    'type' => 'Contra',
-                ]);
+        AccountSubtype::create([
+            'company_id' => 1,
+            'name' => 'Purchase Discounts',
+            'category' => 'Expense',
+            'type' => 'Contra',
+        ]);
     }
 }

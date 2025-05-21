@@ -4,7 +4,7 @@ namespace App\Livewire\FromSub\Post;
 
 use Livewire\Attributes\Layout;
 use App\Models\Post;
-use App\Models\Product;
+use App\Models\Tag;
 use Rap2hpoutre\FastExcel\FastExcel;
 use App\Models\User;
 use Illuminate\Support\Facades\Log;
@@ -73,7 +73,6 @@ class PostList extends Component
             ['key' => 'image', 'label' => 'Image', 'sortBy' => 'content',  'class' => 'whitespace-nowrap  border-1 border-l-1 border-gray-300 dark:border-gray-600 text-left'],
             ['key' => 'comment_body', 'label' => 'Comment', 'sortBy' => 'comment_body', 'class' => 'whitespace-nowrap  border-1 border-l-1 border-gray-300 dark:border-gray-600 text-left'],
             ['key' => 'content', 'label' => 'Content', 'sortBy' => 'content',  'class' => 'whitespace-nowrap  border-1 border-l-1 border-gray-300 dark:border-gray-600 text-left'],
-            ['key' => 'tag', 'label' => 'Tag', 'sortBy' => 'content',  'class' => 'whitespace-nowrap  border-1 border-l-1 border-gray-300 dark:border-gray-600 text-left'],
             ['key' => 'created_at', 'label' => 'Created At', 'format' => ['date', 'Y-m-d H:i:s'], 'sortBy' => 'created_at', 'class' => 'whitespace-nowrap  border-1 border-l-1 border-gray-300 dark:border-gray-600 text-center']
         ];
     }
@@ -83,13 +82,11 @@ class PostList extends Component
     {
 
 
-
         $query = Post::query();
         $query->when($this->search, fn($q) => $q->where('title', 'like', "%{$this->search}%"))
             ->when(($this->filters['content'] ?? ''), fn($q) => $q->where('content', $this->filters['content']))
             ->when(($this->filters['']->image->url ?? ''), fn($q) => $q->where('url', $this->filters['content']->image->url))
             ->when(($this->filters['']->comments->body ?? ''), fn($q) => $q->where('content', $this->filters['content']->comments->body))
-            ->when(($this->filters['']->tags->name ?? ''), fn($q) => $q->where('name', $this->filters['content']->tags->name))
             ->when(($this->filters['created_at'] ?? ''), function ($q) {
                 $dateTime = $this->filters['created_at'];
                 $dateOnly = substr($dateTime, 0, 10);
